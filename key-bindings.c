@@ -300,6 +300,10 @@ key_bindings_init(void)
 		"bind -Tcopy-mode M-r send -X middle-line",
 		"bind -Tcopy-mode M-v send -X page-up",
 		"bind -Tcopy-mode M-w send -X copy-selection-and-cancel",
+		/* registers */
+		"bind -Tcopy-mode M-y send -X copy-selection-to-register",
+		"bind C-] paste-buffer-from-register",
+		/* registers */
 		"bind -Tcopy-mode M-{ send -X previous-paragraph",
 		"bind -Tcopy-mode M-} send -X next-paragraph",
 		"bind -Tcopy-mode M-Up send -X halfpage-up",

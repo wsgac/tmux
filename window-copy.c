@@ -611,6 +611,19 @@ window_copy_command(struct window_pane *wp, struct client *c, struct session *s,
 			redraw = 1;
 			cancel = 1;
 		}
+		/* registers */
+		if (strcmp(command, "copy-selection-to-register") == 0) {
+		  char *reg[2];
+		  xasprintf(reg, "Register [a-z]: ");
+		    
+		  /* scanf(" %c", reg); */
+			if (s != NULL)
+				window_copy_copy_selection(wp, NULL);
+			window_copy_clear_selection(wp);
+			redraw = 1;
+			cancel = 1;
+		}
+		/* registers */
 		if (strcmp(command, "cursor-down") == 0) {
 			for (; np != 0; np--)
 				window_copy_cursor_down(wp, 0);

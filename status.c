@@ -659,9 +659,10 @@ status_message_redraw(struct client *c)
 	memcpy(&old_status, &c->status, sizeof old_status);
 
 	lines = status_line_size(c->session);
-	if (lines <= 1)
+	if (lines <= 1) {
+		lines = 1;
 		screen_init(&c->status, c->tty.sx, 1, 0);
-	else
+	} else
 		screen_init(&c->status, c->tty.sx, lines, 0);
 
 	len = screen_write_strlen("%s", c->message_string);
@@ -803,7 +804,7 @@ status_prompt_redraw(struct client *c)
 	struct screen		 old_status;
 	u_int			 i, offset, left, start, pcursor, pwidth, width;
 	u_int			 lines;
-	size_t			 len, off;
+	size_t			 len;
 	struct grid_cell	 gc, cursorgc;
 
 	if (c->tty.sx == 0 || c->tty.sy == 0)
@@ -811,15 +812,15 @@ status_prompt_redraw(struct client *c)
 	memcpy(&old_status, &c->status, sizeof old_status);
 
 	lines = status_line_size(c->session);
-	if (lines <= 1)
+	if (lines <= 1) {
+		lines = 1;
 		screen_init(&c->status, c->tty.sx, 1, 0);
-	else
+	} else
 		screen_init(&c->status, c->tty.sx, lines, 0);
 
 	len = screen_write_strlen("%s", c->prompt_string);
 	if (len > c->tty.sx)
 		len = c->tty.sx;
-	off = 0;
 
 	if (c->prompt_mode == PROMPT_COMMAND)
 		style_apply(&gc, s->options, "message-command-style");
@@ -1338,6 +1339,7 @@ process_key:
 		break;
 	case '\033': /* Escape */
 	case '\003': /* C-c */
+	case '\007': /* C-g */
 		if (c->prompt_inputcb(c, c->prompt_data, NULL, 1) == 0)
 			status_prompt_clear(c);
 		break;
